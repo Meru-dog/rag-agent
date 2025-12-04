@@ -1,0 +1,54 @@
+┌────────────────────────────────────────┐
+│           フロントエンド（React）         │
+│  - App.jsx                             │
+│    ・質問入力フォーム                     │
+│    ・/api/ask に POST                 　│
+│    ・回答 & 参照文書の表示        　　     │
+└───────────────▲────────────────────────┘
+                │ HTTP (JSON, POST)
+                │
+┌───────────────┴────────────────────────┐
+│           バックエンド（FastAPI）      　 │
+│  app/main.py                           │
+│   - /api/ask エンドポイント          　   │
+│      1. AskRequest を受け取る            │
+│      2. retriever.retrieve() で検索     │
+│      3. generate_answer() で回答生成   　│
+│      4. AskResponse を返却              │
+│   - /health エンドポイント    　　    　  │
+└───────────────┬────────────────────────┘
+                │
+                │ （Python 内部呼び出し）
+                │
+   ┌────────────┴────────────────────────┐
+   │        RAG モジュール群               │
+   │  app/rag/document_loader.py         │
+   │    - documents/ から文書読み込み       │
+   │                                     │
+   │  app/rag/index_builder.py           │
+   │    - 文書をチャンク化                  │
+   │    - Chroma に ids/documents/       │
+   │      metadatas を add               │
+   │                                     │
+   │  app/rag/retriever.py               │
+   │    - Chroma のコレクションに           │
+   │      query_texts=[question] で検索   │
+   │    - 類似チャンク + スコアを返す        │
+   │                                     │
+   │  app/rag/llm_client.py              │
+   │    - retrieved_chunks をまとめて      │
+   │      コンテキスト文字列を作成           │
+   │    - OpenAI Chat Completion を呼ぶ   │
+   │    - 回答テキストを返す                │
+   └────────────┬────────────────────────┘
+                │
+                │ ファイルI/O
+                │
+  ┌─────────────┴────────────────────────┐
+  │     ストレージ / 知識ベース     　       │
+  │  backend/documents/                  │
+  │    - sample1.txt などの原文書     　   │
+  │                                      │
+  │  backend/chroma_db/                  │
+  │    - Chroma のベクトルストア       　   │
+  └──────────────────────────────────────┘

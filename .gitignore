@@ -1,0 +1,19 @@
+# Python venv
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Chroma DB (生成物)
+backend/chroma_db/
+
+# 環境変数ファイル（APIキーなど）
+backend/.env
+
+# Node modules
+frontend/node_modules/
+
+# Vite build成果物（必要なら）
+frontend/dist/
+
+# OS系
+.DS_Store
