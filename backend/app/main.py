@@ -6,6 +6,8 @@ from pydantic import BaseModel                  # リクエスト/レスポン�
 
 from app.rag.retriever import RAGRetriever      # 類似検索クラス
 from app.rag.llm_client import generate_answer  # 回答生成関数
+from .rag.index_builder import build_index
+
 
 
 # FastAPI アプリケーションのインスタンスを作成
@@ -62,6 +64,10 @@ def on_startup():
     retriever = RAGRetriever(top_k=3)
     print("RAGRetriever 初期化完了")
 
+
+@app.on_event("startup")
+def startup_event():
+    build_index()
 
 @app.get("/health")
 def health_check():
