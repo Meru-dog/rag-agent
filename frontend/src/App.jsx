@@ -23,7 +23,7 @@ function App() {
     setReferences([]);
 
     try {
-      const res = await fetch("http://localhost:8000/api/ask", {
+      const res = await fetch("https://rag-agent-i7ek.onrender.com/api/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
