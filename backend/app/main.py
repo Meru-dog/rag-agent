@@ -16,7 +16,8 @@ app = FastAPI()
 # フロントエンド（Vite dev server）のオリジンを許可する
 origins = [
     "http://localhost:5173",  # 開発中のフロントエンドURL
-    "https://rag-agent-delta.vercel.app/" # 本番URL
+    "https://rag-agent-delta.vercel.app" # 本番URL
+    "https://rag-agent-i7ek.onrender.com",  
 ]
 
 # CORS（クロスオリジン）設定：フロントからのAPIアクセスを許可
