@@ -25,6 +25,11 @@ function App() {
     try {
       // 環境変数 VITE_API_URL から取得（設定されていない場合はローカル開発用のデフォルト値を使用）
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api/ask";
+      
+      // デバッグ用：使用されているAPI URLをコンソールに出力（本番環境でも確認可能）
+      console.log("API URL:", apiUrl);
+      console.log("Environment variable VITE_API_URL:", import.meta.env.VITE_API_URL);
+      
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -41,8 +46,25 @@ function App() {
       setAnswer(data.answer ?? "");
       setReferences(data.references ?? []);
     } catch (err) {
-      console.error(err);
-      setError("回答の取得に失敗しました。サーバーが起動しているか確認してください。");
+      console.error("API呼び出しエラー:", err);
+      console.error("使用されたAPI URL:", import.meta.env.VITE_API_URL || "http://localhost:8000/api/ask");
+      console.error("エラー詳細:", {
+        message: err.message,
+        stack: err.stack,
+        name: err.name
+      });
+      
+      // より詳細なエラーメッセージを表示
+      let errorMessage = "回答の取得に失敗しました。";
+      if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api/ask";
+        errorMessage += " ネットワークエラーが発生しました。API URLを確認してください: " + apiUrl;
+      } else if (err.message.includes("CORS")) {
+        errorMessage += " CORSエラーが発生しました。バックエンドのCORS設定を確認してください。";
+      } else {
+        errorMessage += " エラー: " + err.message;
+      }
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
