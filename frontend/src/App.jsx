@@ -23,7 +23,9 @@ function App() {
     setReferences([]);
 
     try {
-      const res = await fetch("https://rag-agent-i7ek.onrender.com/api/ask", {
+      // 環境変数 VITE_API_URL から取得（設定されていない場合はローカル開発用のデフォルト値を使用）
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api/ask";
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

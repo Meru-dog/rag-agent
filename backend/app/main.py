@@ -13,23 +13,14 @@ from .rag.index_builder import build_index
 # FastAPI アプリケーションのインスタンスを作成
 app = FastAPI()
 
-# フロントエンド（Vite dev server）のオリジンを許可する
-origins = [
-    "http://localhost:5173",
-    "https://rag-agent-delta.vercel.app",
-    "https://rag-agent-i7ek.onrender.com",  # backend自身
-]
-
-
 # CORS（クロスオリジン）設定：フロントからのAPIアクセスを許可
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # 許可するオリジン
+    allow_origins=["*"],  # ここは * でOK（セキュリティは別論点）
     allow_credentials=True,
-    allow_methods=["*"],         # どのHTTPメソッドも許可
-    allow_headers=["*"],         # すべてのヘッダーを許可
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
 
 # --- Pydantic モデル定義（リクエスト・レスポンスの型）
 

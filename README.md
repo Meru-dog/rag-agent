@@ -164,12 +164,19 @@ cd frontend
 npm install
 ```
 
-フロントエンドの `src/App.jsx` で、バックエンドの URL を設定します：
+**環境変数の設定（重要）**
 
-```js
-const API_URL = "https://<YOUR_BACKEND_URL>/api/ask"; 
-// ローカル開発時は "http://localhost:8000/api/ask" など
+`frontend/.env` ファイルを作成して、バックエンドAPIのURLを設定します：
+
+```bash
+# frontend/.env
+VITE_API_URL=http://localhost:8000/api/ask
 ```
+
+**注意：**
+- `.env` ファイルはGitにコミットされません（`.gitignore`で除外されています）
+- デプロイ環境（Vercel等）では、環境変数として `VITE_API_URL` を設定してください
+- ローカル開発時は上記のデフォルト値（`http://localhost:8000/api/ask`）が使用されます
 
 ローカル開発用サーバーを起動：
 
@@ -191,7 +198,11 @@ npm run dev
 
   * Vercel 等に GitHub 連携でデプロイ
   * ビルドコマンド：`npm run build`
-  * 公開用 URL に合わせて `API_URL` を設定
+  * **環境変数の設定（重要）**：
+    * Vercelのダッシュボードで環境変数を追加：
+      * 変数名：`VITE_API_URL`
+      * 値：`https://your-backend-url.onrender.com/api/ask`
+    * これにより、コードにURLをハードコードせずにデプロイできます
 
 ---
 

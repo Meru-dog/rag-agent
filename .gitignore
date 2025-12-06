@@ -8,6 +8,9 @@ backend/chroma_db/
 
 # 環境変数ファイル（APIキーなど）
 backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.production
 
 # Node modules
 frontend/node_modules/
